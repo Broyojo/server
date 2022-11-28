@@ -11,6 +11,8 @@ groups = [
 ]
 
 backups = "backups"
+custom_icons = "webserver/custom_icons"
+render_dir = "webserver/render"
 
 
 def list_servers(group):
@@ -190,8 +192,8 @@ def signFilter(poi):
                 print("text:", text)
                 return (hover, text)
 
-customwebassets = "{os.path.join(home, "webserver/custom_icons")}"
-outputdir = "{os.path.join(home, "webserver/render")}"
+customwebassets = "{os.path.join(home, custom_icons)}"
+outputdir = "{os.path.join(home, render_dir)}"
 
 """
         )
