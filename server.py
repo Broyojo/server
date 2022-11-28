@@ -230,7 +230,7 @@ def main():
             import schedule
 
             schedule.every(1).days.at("05:00").do(backup, "extra")
-            schedule.every(1).week.at("06:00").do(render, "extra")
+            schedule.every(7).days.at("06:00").do(render, "extra")
 
             while True:
                 schedule.run_pending()
