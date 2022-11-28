@@ -89,7 +89,7 @@ def backup_server(group, server):
         send_keys(server, "save-off")
         send_keys(server, "save-all")
         os.system(backup_cmd)
-        say(server, "Backing completed")
+        say(server, "Backup completed")
         send_keys(server, "save-on")
     else:
         # server is not active
