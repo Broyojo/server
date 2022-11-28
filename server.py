@@ -79,7 +79,7 @@ def start(*names):
 
 
 def backup_server(group, server):
-    backup_cmd = f'tar -zcvf {backups}/"{server}-$(TZ=America/New_York date +%Y-%m-%d).gz" {os.path.join(home, group, server)}'
+    backup_cmd = f'tar -zcvf {os.path.join(home, backups)}/"{server}-$(TZ=America/New_York date +%Y-%m-%d).gz" {os.path.join(home, group, server)}'
 
     print(f":: Backing up server '{server}'...")
 
