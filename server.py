@@ -16,7 +16,7 @@ render_dir = "webserver/render"
 
 
 def list_servers(group):
-    return os.listdir(group)
+    return os.listdir(os.path.join(home, group))
 
 
 def send_keys(session, keys):
