@@ -3,20 +3,22 @@ import subprocess
 import sys
 import time
 
-home = "/home/broyojo/"
+home_dir = "/home/broyojo/"
 
 groups = [
     "main",
     "extra",
 ]
 
-backups = "backups"
-custom_icons = "webserver/custom_icons"
+backup_dir = "backups"
+bucket_name = "s3://broyojo-minecraft"
+
+custom_icons_dir = "webserver/custom_icons"
 render_dir = "webserver/render"
 
 
 def list_servers(group):
-    return os.listdir(os.path.join(home, group))
+    return os.listdir(os.path.join(home_dir, group))
 
 
 def send_keys(session, keys):
@@ -69,7 +71,7 @@ def start_server(group, server):
 
     print(f":: Starting server '{server}'...")
 
-    os.system(f"tmux new -s {server} -c '{os.path.join(home, group, server)}' -d")
+    os.system(f"tmux new -s {server} -c '{os.path.join(home_dir, group, server)}' -d")
 
     send_keys(server, "./start.sh")
 
@@ -79,7 +81,7 @@ def start(*names):
 
 
 def backup_server(group, server):
-    backup_cmd = f'tar -zcvf {os.path.join(home, backups)}/"{server}-$(TZ=America/New_York date +%Y-%m-%d).gz" {os.path.join(home, group, server)}'
+    backup_cmd = f'tar -zcvf {os.path.join(home_dir, backup_dir)}/"{server}-$(TZ=America/New_York date +%Y-%m-%d).gz" {os.path.join(home_dir, group, server)}'
 
     print(f":: Backing up server '{server}'...")
 
@@ -100,13 +102,17 @@ def backup_server(group, server):
 
 def backup(*names):
     perform_task(backup_server, *names)
+    print(f":: Uploading to {bucket_name}...")
+    os.system(
+        f"aws s3 sync {os.path.join(home_dir, backup_dir)} {bucket_name} --storage-class=STANDARD_IA --profile=default"
+    )
 
 
 def render_server(group, server):
     print(f":: Rendering server '{server}'...")
 
-    server_dir = os.path.join(home, group, server, "world")
-    copied_dir = os.path.join(os.path.join(home, "tmp"), server)
+    server_dir = os.path.join(home_dir, group, server, "world")
+    copied_dir = os.path.join(os.path.join(home_dir, "tmp"), server)
 
     if server in list_sessions():
         # server is active
@@ -192,8 +198,8 @@ def signFilter(poi):
                 print("text:", text)
                 return (hover, text)
 
-customwebassets = "{os.path.join(home, custom_icons)}"
-outputdir = "{os.path.join(home, render_dir)}"
+customwebassets = "{os.path.join(home_dir, custom_icons_dir)}"
+outputdir = "{os.path.join(home_dir, render_dir)}"
 
 """
         )
