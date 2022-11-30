@@ -18,6 +18,8 @@ bucket_name = "s3://broyojo-minecraft"
 custom_icons_dir = "webserver/custom_icons"
 render_dir = "webserver/render"
 
+shell_profile_path = os.path.join(home_dir, ".zshrc")
+
 
 def list_servers(group):
     return os.listdir(os.path.join(home_dir, group))
@@ -245,6 +247,15 @@ def main():
                 time.sleep(30)
         case _:
             print(":: Invalid command")
+            return
+
+    with open("shortcuts.sh", "w") as f:
+        f.write(
+            "\n".join(
+                f"alias {session}='tmux a -t {session}'" for session in list_sessions()
+            )
+        )
+        os.system(f"source {shell_profile_path}")
 
 
 if __name__ == "__main__":
