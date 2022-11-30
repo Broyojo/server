@@ -250,6 +250,9 @@ def main():
             schedule.every().day.at("06:00").do(render, "main")
             schedule.every().day.at("06:00").do(render, "extra")
 
+            for job in schedule.get_jobs():
+                print(job.__repr__())
+
             while True:
                 schedule.run_pending()
                 time.sleep(30)
