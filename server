@@ -5,7 +5,7 @@ import subprocess
 import sys
 import time
 
-home_dir = "/home/broyojo/"
+home_dir = "."
 
 groups = [
     "main",
@@ -220,6 +220,13 @@ outputdir = "{os.path.join(home_dir, render_dir)}"
 
     print(":: Render completed")  # TODO: add 'say' command for each rendered server
 
+def upgrade_server(group, server):
+    print(f":: Upgrading '{server}'...")
+    os.system(f"ferium switch {server}")
+    os.system("ferium upgrade")
+
+def upgrade(*names):
+    perform_task(upgrade_server, *names)
 
 def main():
     args = sys.argv[1:]
@@ -239,6 +246,8 @@ def main():
             backup(*args[1:])
         case "render":
             render(*args[1:])
+        case "upgrade":
+            upgrade(*args[1:])
         case "schedule":
             import schedule
 

@@ -2,5 +2,6 @@ __pycache__
 .vscode
 backups
 main
+extra
 tmp
 shortcuts.sh
