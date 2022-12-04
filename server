@@ -222,7 +222,7 @@ outputdir = "{os.path.join(home_dir, render_dir)}"
 
 def upgrade_server(group, server):
     print(f":: Upgrading '{server}'...")
-    os.system(f"ferium switch --profile-name {server}")
+    os.system(f"ferium profile switch --profile-name {server}")
     os.system("ferium upgrade")
 
 def upgrade(*names):
