@@ -5,7 +5,7 @@ import subprocess
 import sys
 import time
 
-home_dir = "."
+home_dir = "/home/broyojo"
 
 groups = [
     "main",
