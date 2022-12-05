@@ -121,21 +121,21 @@ def render_server(group, server):
     server_dir = os.path.join(home_dir, group, server, "world")
     copied_dir = os.path.join(os.path.join(home_dir, "tmp"), server)
 
+    print(f":: Copying '{server}' world file...")
+
     if server in list_sessions():
         # server is active
         say(server, "Copying world file...")
-        print(f":: Copying '{server}' world file...")
         send_keys(server, "save-off")
         send_keys(server, "save-on")
         os.system(f"rsync -avz --delete {server_dir} {copied_dir}")
         say(server, "Finished copying world file")
-        print(f":: Finished copying '{server}' world file")
         send_keys(server, "save-on")
     else:
         # server is not active
-        print(f":: Copying '{server}' world file...")
         os.system(f"rsync -avz --delete {server_dir} {copied_dir}")
-        print(f":: Finished copying '{server}' world file")
+    
+    print(f":: Finished copying '{server}' world file")
 
     with open("render_config.py", "a") as f:
         f.write(
@@ -167,7 +167,8 @@ renders["{server}end"] = {{
 
 """
         )
-    say(server, "Starting render...")
+    if server in list_sessions():
+        say(server, "Starting render...")
     print(f":: Starting render of '{server}'...")
 
 
