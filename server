@@ -19,9 +19,13 @@ custom_icons_dir = "webserver/custom_icons"
 render_dir = "webserver/render"
 
 shell_profile_path = os.path.join(home_dir, ".zshrc")
+repo_path = os.path.join(home_dir, "server")
+
 shortcuts_path = os.path.join(
-    home_dir, "server", "shortcuts.sh"
+    repo_path, "shortcuts.sh"
 )  # specific for the server config
+
+render_config_path = os.path.join(repo_path, "render_config.py")
 
 
 def list_servers(group):
@@ -134,10 +138,10 @@ def render_server(group, server):
     else:
         # server is not active
         os.system(f"rsync -avz --delete {server_dir} {copied_dir}")
-    
+
     print(f":: Finished copying '{server}' world file")
 
-    with open("render_config.py", "a") as f:
+    with open(render_config_path, "a") as f:
         f.write(
             f"""worlds["{server}"] = "{os.path.join(copied_dir, 'world')}"
 
@@ -217,17 +221,20 @@ outputdir = "{os.path.join(home_dir, render_dir)}"
     os.system("overviewer.py --config=render_config.py")
     os.system("overviewer.py --config=render_config.py --genpoi")
 
-    os.remove("render_config.py")
+    os.remove(f"rm {render_config_path}")
 
     print(":: Render completed")  # TODO: add 'say' command for each rendered server
+
 
 def upgrade_server(group, server):
     print(f":: Upgrading '{server}'...")
     os.system(f"ferium profile switch --profile-name {server}")
     os.system("ferium upgrade")
 
+
 def upgrade(*names):
     perform_task(upgrade_server, *names)
+
 
 def main():
     args = sys.argv[1:]
