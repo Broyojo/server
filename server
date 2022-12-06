@@ -177,7 +177,7 @@ renders["{server}end"] = {{
 
 
 def render(*names):
-    with open("render_config.py", "w+") as f:
+    with open(render_config_path, "w+") as f:
         f.write(
             f"""processes = 4
 
@@ -218,8 +218,8 @@ outputdir = "{os.path.join(home_dir, render_dir)}"
 
     perform_task(render_server, *names)
 
-    os.system("overviewer.py --config=render_config.py")
-    os.system("overviewer.py --config=render_config.py --genpoi")
+    os.system(f"overviewer.py --config={render_config_path}")
+    os.system(f"overviewer.py --config={render_config_path} --genpoi")
 
     os.remove(f"rm {render_config_path}")
 
