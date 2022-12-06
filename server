@@ -221,7 +221,7 @@ outputdir = "{os.path.join(home_dir, render_dir)}"
     os.system(f"overviewer.py --config={render_config_path}")
     os.system(f"overviewer.py --config={render_config_path} --genpoi")
 
-    os.remove(f"rm {render_config_path}")
+    os.remove(render_config_path)
 
     print(":: Render completed")  # TODO: add 'say' command for each rendered server
 
