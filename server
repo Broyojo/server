@@ -236,6 +236,18 @@ def upgrade(*names):
     perform_task(upgrade_server, *names)
 
 
+def update_shortcuts():
+    with open(shortcuts_path, "w") as f:
+        f.write(
+            "\n".join(
+                f"alias {session}='tmux a -t {session}'" for session in list_sessions()
+            )
+        )
+        os.system(
+            f"source {shell_profile_path}"
+        )  # 'source shortcuts.sh' should be shell profile
+
+
 def main():
     args = sys.argv[1:]
 
@@ -245,6 +257,7 @@ def main():
         for session in sessions:
             print(session)
         print("Total number of running servers:", len(sessions))
+        update_shortcuts()
         return
 
     match args[0]:
@@ -275,17 +288,8 @@ def main():
                 time.sleep(30)
         case _:
             print(":: Invalid command")
-            return
 
-    with open(shortcuts_path, "w") as f:
-        f.write(
-            "\n".join(
-                f"alias {session}='tmux a -t {session}'" for session in list_sessions()
-            )
-        )
-        os.system(
-            f"source {shell_profile_path}"
-        )  # 'source shortcuts.sh' should be shell profile
+    update_shortcuts()
 
 
 if __name__ == "__main__":
